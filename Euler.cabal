@@ -10,6 +10,7 @@ Build-Type:     Simple
 Synopsis:       Libraries to help in solving Project Euler problems
 
 Library
+  Hs-Source-Dirs: src
   Build-Depends:  base, haskell98
   Exposed-modules:
     Euler.Primes Euler.Decimal Euler.Numz
