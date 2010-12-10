@@ -1,16 +1,19 @@
 Name:           Euler
 Version:        0.0.1
-Cabal-Version:  >= 1.2
+Cabal-Version:  >= 1.4
 License:        GPL-3
 License-File:   LICENSE
 Author:         Nicholas Orton
+Maintainer:      no |<nick@orton.biz>
 Homepage:       TBD
 Category:       Educational
 Build-Type:     Simple
 Synopsis:       Libraries to help in solving Project Euler problems
 
+Description:    project euler tools
+
 Library
   Hs-Source-Dirs: src
-  Build-Depends:  base, haskell98
+  Build-Depends:  base >= 2 && < 4, haskell98
   Exposed-modules:
     Euler.Primes Euler.Decimal Euler.Numz
