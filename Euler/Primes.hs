@@ -13,7 +13,13 @@ various procedures for generating primes
 sequence [A000040](http://www.research.att.com/~njas/sequences/A000040)
 -}
 
-module Euler.Primes where
+module Euler.Primes(
+  isPrime,
+  pfacs, 
+  primes_by_lcd, 
+  sieve,
+  primes_by_wheel
+  ) where
 import Euler.Divisors(ld)
 import List
 
@@ -22,22 +28,24 @@ import List
 isPrime :: Integer -> Bool
 isPrime x = ld x == x
 
-
--- |Prime factorization for a number
+{- |Returns prime factors for some number. The prime factors of 42 are 2, 3, 
+    and 7 and the prime factors of 74 are 2 and 37
+-}
+pfacs :: Integer -> [Integer]
 pfacs x = nub (pfacs' x [])
 pfacs' 1 (xs) = xs 
 pfacs' n (xs) = pfacs' (div n (ld n)) ((ld n):xs) 
 
--- the prime factors of 42 are 2, 3, and 7 and the prime factors of 74 are 2
--- and 37
-                          
 testpfacs = ((pfacs 42) == [7,3,2]) && (pfacs 74 == [37,2])
 
--- |the largest prime factor is the head of the list
+-- TODO REMOVE
+-- the largest prime factor is the head of the list
 lgstPfac x = top (pfacs x)
    where top (y:ys) = y
 
 testlgstPfac = lgstPfac 600851475143 == 6857
+-- -----------------------------------------------
+
 
 -- primes_by_wheel is the default prime generation procedure
 primes = primes_by_wheel
@@ -46,17 +54,16 @@ primes = primes_by_wheel
 testprimes = take 25 primes == [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
 
 
--- |brute force: filter naturals with a prime check
+-- | Brute force procedure for generating prime numbers
+primes_by_lcd :: [Integer] 
 primes_by_lcd = filter isPrime [2..] 
 
 
-{-
-Sieve of Eratosthenes
----------------------
-
-starting from 2 cross off all of its multiples from the list of integers. 
-The next number you find will be prime.  Cross off all of its multiples, repeat.
-The numbers left will all be prime
+{- |
+Procedure for generating primes using the Sieve of Eratosthenes.
+Starting from 2 cross off all of its multiples from the list of integers. 
+The next number you find will be prime.  Cross off all of its multiples, 
+repeat. The numbers left will all be prime
 -}
 sieve :: [Integer] -> [Integer]
 sieve (0:xs) = sieve xs
@@ -67,14 +74,21 @@ sieve (n:xs) = n:sieve (mark xs 1 n)
                                | otherwise = y : (mark ys (k+1) m)
 primes_from_sieve = sieve [2..]
  
-{-  
-Prime Wheel
------------ 
-
-taken from [here](http://www.haskell.org/haskellwiki/Prime_numbers)
+{- |  
+Taken from <http://www.haskell.org/haskellwiki/Prime_numbers>
 This is more or less the brute force method above, but we don't even consider
 multiples of the first 10 prime numbers
 -}
+primes_by_wheel :: [Integer]
+primes_by_wheel = known ++ unknown
+   where
+   1:p:candidates = roll $ mkWheel known
+   known          = [2,3,5,7,11,13,17,19,23,29]
+   unknown        = p : filter isPrime candidates
+   isPrime n      = all (not . divides n) $ takeWhile (\p -> p*p <= n) unknown
+   divides n p    = n `mod` p == 0
+
+
 data Wheel = Wheel Integer [Integer]
 w0 = Wheel 1 [1]
 
@@ -88,16 +102,7 @@ roll (Wheel n rs) = [n*k+r | k <- [0..], r <- rs]
 mkWheel :: [Integer] -> Wheel
 mkWheel ds = foldl nextSize w0 ds
 
-primes_by_wheel :: [Integer]
-primes_by_wheel = known ++ unknown
-   where
-   1:p:candidates = roll $ mkWheel known
-   known          = [2,3,5,7,11,13,17,19,23,29]
-   unknown        = p : filter isPrime candidates
-   isPrime n      = all (not . divides n) $ takeWhile (\p -> p*p <= n) unknown
-   divides n p    = n `mod` p == 0
 
-
--- |test the module
+-- test the module
 testModulePrimes =  testpfacs && testlgstPfac && testprimes
 
