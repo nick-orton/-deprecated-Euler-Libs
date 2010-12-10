@@ -27,10 +27,10 @@ fromDigits = (\x -> toInteger(foldl addDigit 0 x))
 
 testFromDigits = fromDigits [5,3,6,8] == 5368
 
-{- |
-converts a decimal number to a list representing a binary number
-http://snipplr.com/view/11807/convert-decimal-to-binary-in-haskell/
--}
+-- |
+-- Converts a decimal number to a list representing a binary number.
+-- <http://snipplr.com/view/11807/convert-decimal-to-binary-in-haskell/>
+decToBin :: Integer -> [Integer]
 decToBin x = reverse $ decToBin' x
     where
     decToBin' 0 = []
