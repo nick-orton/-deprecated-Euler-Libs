@@ -16,4 +16,8 @@ Library
   Hs-Source-Dirs: src
   Build-Depends:  base >= 2 && < 4, haskell98
   Exposed-modules:
-    Euler.Primes Euler.Decimal Euler.Numz
+    Euler.Numz 
+    Euler.Decimal 
+    Euler.Pascal 
+    Euler.Divisors
+    Euler.Primes
