@@ -18,7 +18,8 @@ module Euler.Primes
   pfacs,
   primes_by_lcd,
   sieve,
-  primes_by_wheel
+  primes_by_wheel,
+  lgstPfac
   ) where
 import Euler.Divisors (ld)
 import List
@@ -38,9 +39,8 @@ pfacs' n (xs) = pfacs' (div n (ld n)) ((ld n ) : xs)
 
 testpfacs = ((pfacs 42) == [7, 3, 2]) && (pfacs 74 == [37, 2])
 
--- TODO REMOVE
--- the largest prime factor is the head of the list
-lgstPfac x = top (pfacs x)
+-- |the largest prime factor 
+lgstPfac x = top $ pfacs x
    where top (y : ys) = y
 
 testlgstPfac = lgstPfac 600851475143 == 6857
