@@ -16,6 +16,7 @@ sequence [A000040](http://www.research.att.com/~njas/sequences/A000040)
 module Euler.Primes
 ( isPrime,
   pfacs,
+  primes,
   primes_by_lcd,
   sieve,
   primes_by_wheel,
@@ -47,7 +48,7 @@ testlgstPfac = lgstPfac 600851475143 == 6857
 -- -----------------------------------------
 
 
--- primes_by_wheel is the default prime generation procedure
+-- |primes_by_wheel is the default prime generation procedure
 primes = primes_by_wheel
 
 -- assert the first 25 prime numbers
