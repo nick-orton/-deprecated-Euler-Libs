@@ -11,7 +11,11 @@ Portability :  portable
 Code : https://github.com/nick-orton/project_euler/blob/master/Lib/Decumal.hs
 -}
 
-module Euler.Decimal where
+module Euler.Decimal 
+( toDigits, 
+  fromDigits, 
+  decToBin
+  ) where
 import Char
 
 -- |converts an integer into a list of its digits
